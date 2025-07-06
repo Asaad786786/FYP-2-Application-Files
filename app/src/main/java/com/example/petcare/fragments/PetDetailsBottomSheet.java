@@ -52,22 +52,42 @@ public class PetDetailsBottomSheet extends BottomSheetDialogFragment {
             TextView petGender = view.findViewById(R.id.petGender);
 
             // Set pet details
-            petName.setText(pet.getPetName());
-            petCategory.setText(pet.getPetCategory());
-            petBreed.setText(pet.getPetBreed());
+            petName.setText("Pet Name: "+pet.getPetName());
+            petCategory.setText("Pet Category: "+pet.getPetCategory());
+            petBreed.setText("Pet Breed: "+pet.getPetBreed());
             petAge.setText(String.format("%d years", Integer.parseInt(pet.getPetAge())));
             petWeight.setText(String.format("%d kg", pet.getPetWeight()));
             petGender.setText(pet.getPetGender());
 
             // Load pet image
+            int categoryDrawableRes = R.drawable.pets_foot_ic;
+            if (pet.getPetCategory() != null) {
+                switch (pet.getPetCategory().toLowerCase()) {
+                    case "dog":
+                        categoryDrawableRes = R.drawable.dog_svgrepo_com;
+                        break;
+                    case "cat":
+                        categoryDrawableRes = R.drawable.cat_svgrepo_com;
+                        break;
+                    case "fish":
+                        categoryDrawableRes = R.drawable.fish_svgrepo;
+                        break;
+                    case "rabbit":
+                        categoryDrawableRes = R.drawable.rabbit_easter_svgrepo_com;
+                        break;
+                    case "parrot":
+                        categoryDrawableRes = R.drawable.parrot_svgrepo_com;
+                        break;
+                }
+            }
             if (pet.getPetImageUrl() != null && !pet.getPetImageUrl().isEmpty()) {
                 Glide.with(requireContext())
                         .load(pet.getPetImageUrl())
-                        .placeholder(R.drawable.pets_foot_ic)
-                        .error(R.drawable.pets_foot_ic)
+                        .placeholder(categoryDrawableRes)
+                        .error(categoryDrawableRes)
                         .into(petImage);
             } else {
-                petImage.setImageResource(R.drawable.pets_foot_ic);
+                petImage.setImageResource(categoryDrawableRes);
             }
         }
 
